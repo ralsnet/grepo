@@ -150,9 +150,9 @@ func (a *API) executeUseCase(ctx context.Context, uc Descriptor, input any) (out
 	}()
 
 	if a.options.fixedTime != nil {
-		ctx = withExecuteTime(ctx, *a.options.fixedTime)
+		ctx = WithExecuteTime(ctx, *a.options.fixedTime)
 	} else {
-		ctx = withExecuteTime(ctx, time.Now())
+		ctx = WithExecuteTime(ctx, time.Now())
 	}
 
 	ctx, err = hookBefore(ctx, uc, ptr.Elem().Interface(), groups)

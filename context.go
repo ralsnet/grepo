@@ -20,6 +20,6 @@ func ExecuteTime(ctx context.Context) time.Time {
 	return time.Now()
 }
 
-func withExecuteTime(ctx context.Context, t time.Time) context.Context {
+func WithExecuteTime(ctx context.Context, t time.Time) context.Context {
 	return context.WithValue(ctx, ctxkeyExecuteTime, t)
 }
