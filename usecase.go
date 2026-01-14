@@ -196,9 +196,9 @@ func (b *UseCaseBuilder[I, O]) AddBeforeHook(hook func(ctx context.Context, i *I
 	return b
 }
 
-func (b *UseCaseBuilder[I, O]) AddAfterHook(hook func(ctx context.Context, i I, o O)) *UseCaseBuilder[I, O] {
+func (b *UseCaseBuilder[I, O]) AddAfterHook(hook func(ctx context.Context, i I, o *O)) *UseCaseBuilder[I, O] {
 	b.uc.hook.AddAfter(func(ctx context.Context, uc Descriptor, i I, o *O) {
-		hook(ctx, i, *o)
+		hook(ctx, i, o)
 	})
 	return b
 }
