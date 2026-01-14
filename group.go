@@ -47,6 +47,21 @@ func (g *Group) Name() string {
 	return g.name
 }
 
+func (g *Group) AddBeforeHook(hook BeforeHook[any]) *Group {
+	g.hook.AddBefore(hook)
+	return g
+}
+
+func (g *Group) AddAfterHook(hook AfterHook[any, any]) *Group {
+	g.hook.AddAfter(hook)
+	return g
+}
+
+func (g *Group) AddErrorHook(hook ErrorHook[any]) *Group {
+	g.hook.AddError(hook)
+	return g
+}
+
 func (g *Group) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + g.name + `"`), nil
 }
