@@ -16,6 +16,10 @@ import (
 
 type apikey struct{}
 
+func WithAPIContext(ctx context.Context, api *grepo.API) context.Context {
+	return context.WithValue(ctx, apikey{}, api)
+}
+
 type SetupFunc func(cmd *cobra.Command, uc grepo.Descriptor)
 
 func New(api *grepo.API, name string, setups ...SetupFunc) *cobra.Command {
@@ -24,7 +28,7 @@ func New(api *grepo.API, name string, setups ...SetupFunc) *cobra.Command {
 		Short: api.Description(),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
-			ctx = context.WithValue(ctx, apikey{}, api)
+			ctx = WithAPIContext(ctx, api)
 			cmd.SetContext(ctx)
 			return nil
 		},
