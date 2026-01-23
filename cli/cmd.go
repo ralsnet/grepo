@@ -95,7 +95,8 @@ func newUseCaseCommand(uc grepo.Descriptor, setups ...SetupFunc) *cobra.Command 
 	cmd.Long = b.String()
 
 	cmd.Flags().String("input", "", "Path to JSON file containing input data")
-	cmd.Flags().Bool("stdin", false, "Path to JSON file containing input data")
+	cmd.Flags().Bool("stdin", false, "Read input data from standard input")
+	cmd.ArgAliases = []string{"input-data"}
 
 	for _, setup := range setups {
 		setup(cmd, uc)
