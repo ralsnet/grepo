@@ -94,7 +94,8 @@ func newUseCaseCommand(uc grepo.Descriptor, setups ...SetupFunc) *cobra.Command 
 
 	cmd.Long = b.String()
 
-	cmd.Flags().StringP("input", "i", "", "Path to JSON file containing input data")
+	cmd.Flags().String("input", "", "Path to JSON file containing input data")
+	cmd.Flags().Bool("stdin", false, "Path to JSON file containing input data")
 
 	for _, setup := range setups {
 		setup(cmd, uc)
@@ -123,23 +124,16 @@ func specCmd(api *grepo.API) *cobra.Command {
 
 func getInput(cmd *cobra.Command, args []string, uc grepo.Descriptor) (any, error) {
 	var b []byte
-	var err error
 
-	f, err := cmd.Flags().GetString("input")
-	if err != nil {
-		return nil, err
-	}
-	if f != "" {
-		b, err = os.ReadFile(f)
+	if flagInput, err := cmd.Flags().GetString("input"); err == nil && flagInput != "" {
+		b, err = os.ReadFile(flagInput)
 	} else if len(args) > 0 {
 		b = []byte(args[0])
-	} else if stdin := cmd.InOrStdin(); stdin != nil {
+	} else if flagStdin, err := cmd.Flags().GetBool("stdin"); err == nil && flagStdin {
+		stdin := cmd.InOrStdin()
 		b, err = io.ReadAll(stdin)
 	} else {
-		return nil, fmt.Errorf("no input provided")
-	}
-	if err != nil {
-		return nil, err
+		b = []byte("{}")
 	}
 
 	p := reflect.New(reflect.TypeOf(uc.Input())).Interface()
