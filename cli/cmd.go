@@ -65,7 +65,7 @@ func newUseCaseCommand(uc grepo.Descriptor, setups ...SetupFunc) *cobra.Command 
 			if err != nil {
 				return err
 			}
-			_, err = os.Stdout.Write(b)
+			_, err = cmd.OutOrStdout().Write(b)
 			if err != nil {
 				return err
 			}
@@ -114,7 +114,7 @@ func specCmd(api *grepo.API) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			_, err = os.Stdout.Write(b)
+			_, err = cmd.OutOrStdout().Write(b)
 			if err != nil {
 				return err
 			}
